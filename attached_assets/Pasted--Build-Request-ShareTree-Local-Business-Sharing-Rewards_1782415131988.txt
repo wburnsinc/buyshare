@@ -1,0 +1,636 @@
+# Build Request: ShareTree — Local Business Sharing & Rewards Platform
+
+Build a polished, mobile-first web application named **ShareTree**.
+
+## Product purpose
+
+ShareTree connects local businesses with everyday people who want to earn rewards by sharing approved business campaigns with their real networks.
+
+Businesses create campaigns to promote a website, social profile, product, service, event, or physical location. Users discover locally relevant campaigns, share them through approved channels, and earn rewards only when the system verifies eligible campaign activity.
+
+The platform must feel trustworthy, modern, easy to use, and suitable for users across the United States.
+
+---
+
+# Core user types
+
+## 1. Free User / Sharer
+
+Users sign up for free using Google OAuth.
+
+On first sign-in, automatically create a user profile with:
+
+* Full name
+* Email address
+* Google profile photo
+* Unique user ID
+* Referral code
+* Account creation date
+* Default location permission prompt
+* City, state, ZIP code, and service-area preferences
+* Earnings balance
+* Pending earnings balance
+* Lifetime earnings
+* Share history
+* Click and conversion history
+* Payout status
+* Verification / compliance status
+
+Users can:
+
+* Browse recommended local and national campaigns
+* Share approved campaign links through supported share methods
+* Copy a unique tracking link
+* Use native mobile sharing where available
+* Share by text message, email, Facebook, X, LinkedIn, WhatsApp, Messenger, and copy link
+* View each campaign’s reward amount, requirements, geographic eligibility, and status
+* See completed, pending, rejected, and paid rewards
+* Request a payout once they reach a $100 available balance
+* Optionally continue earning until $500 or more before cashing out
+* View their profile, payment methods, tax/compliance notices, and activity history
+
+### Reward model
+
+Default reward: **$0.25 per verified eligible share action**, subject to campaign rules and fraud controls.
+
+Do not automatically pay simply because a user clicks a “shared” button. Instead, create a share event and verify it using approved methods such as:
+
+* Native share completion signal when available
+* Unique tracked URL creation
+* Verified click or conversion thresholds defined by the campaign
+* Platform-supported social sharing integrations where permitted
+* Manual review for suspicious activity
+* Anti-fraud scoring
+
+The UI should clearly label:
+
+* “Share recorded”
+* “Pending verification”
+* “Eligible reward”
+* “Reward approved”
+* “Reward rejected”
+* “Paid”
+
+---
+
+## 2. Recommended Business / Advertiser
+
+Businesses can register and subscribe for **$10 per week**, cancel anytime.
+
+Business onboarding fields:
+
+* Business name
+* Owner or manager name
+* Email
+* Phone number
+* Business website
+* Social media URLs
+* Business address
+* Service area / radius
+* City, state, ZIP code
+* Business category dropdown
+* Business bio
+* Product or service description
+* Price range
+* Campaign goal
+* Campaign budget
+* Weekly budget
+* Start date and end date
+* Target audience
+* Target geographic area
+* Preferred sharing channels
+* Landing page URL
+* Call-to-action text
+* Brand logo
+* Campaign image or video
+* Terms acceptance
+
+Business category dropdown examples:
+
+* Restaurant and food
+* Retail
+* Beauty and wellness
+* Home services
+* Automotive
+* Fitness
+* Medical and dental
+* Professional services
+* Real estate
+* Entertainment
+* Events
+* Travel and hospitality
+* Education
+* Local attractions
+* Nonprofit
+* Technology
+* Other
+
+Businesses can:
+
+* Subscribe at $10/week using Stripe
+* Cancel their subscription anytime
+* Create, pause, edit, duplicate, and end campaigns
+* Set a campaign budget
+* Set a reward per verified share or per verified outcome
+* Set service area and geographic targeting
+* View real-time reporting
+* View number of shares, tracked clicks, unique visitors, conversions, spend, pending rewards, approved rewards, and cost per result
+* Download campaign reports as CSV
+* Add team members later, but build the database to support it now
+
+---
+
+# Required five-site promotion gate
+
+Before a user or business can activate earning or campaign features, show a required onboarding step called:
+
+## “Activate Your ShareTree Network”
+
+The user must review and complete sharing tasks for these five platform properties:
+
+1. EARNTREE.co
+2. Buyshare.co
+3. Bluetruck.co
+4. pocketcash.co
+5. Burncall.co
+
+Important implementation requirement:
+
+* Do not falsely claim that a post was publicly shared if the platform cannot verify it.
+* For each property, create a unique tracking link and let the user choose a supported share method.
+* Record the share attempt, link creation, share channel, timestamp, and resulting clicks.
+* Show the task as “completed” only when the selected verification requirement is satisfied.
+* Include an admin-configurable setting for whether this is mandatory, optional, or replaced by another onboarding requirement.
+
+Activation screen should include:
+
+* Five branded cards
+* Description for each property
+* Unique tracking link
+* Share buttons
+* Completion progress bar: 0 of 5 completed
+* “Continue” button unlocked after all required tasks are completed
+* Clear disclosure that rewards depend on eligibility and verification
+
+---
+
+# AI matching engine
+
+Create an AI-assisted matching system that recommends campaigns to users based on:
+
+* User location
+* User selected service area
+* Business campaign location
+* Business service radius
+* Campaign category
+* User interests
+* Past campaign engagement
+* Preferred share channels
+* Campaign budget availability
+* Campaign quality score
+* Frequency caps
+* Fraud risk score
+* Local relevance
+
+The first version should use a transparent rules-based matching engine with an architecture that can later support AI ranking.
+
+Example scoring logic:
+
+* Strong location match: high score
+* Same business category as user interest: medium score
+* Campaign with available budget: required
+* Repeated exposure to same campaign: lower score
+* Suspicious user activity: exclude or hold for review
+* Nearby local businesses: prioritize
+
+Display a “Why this was recommended” label, for example:
+
+* “Recommended because it serves Avon Park and nearby areas.”
+* “Matches your interests in food and local services.”
+* “Popular with users in your area.”
+
+---
+
+# User dashboard
+
+Create a user dashboard with:
+
+## Header
+
+* ShareTree logo
+* Notification bell
+* User avatar
+* Earnings balance
+* Navigation menu
+
+## Main dashboard cards
+
+* Available balance
+* Pending rewards
+* Lifetime earnings
+* Next payout eligibility
+* Progress to $100 payout threshold
+* Progress to optional $500 milestone
+* Local campaigns available
+* Shares completed today
+* Clicks generated today
+
+## Campaign feed
+
+Each campaign card must show:
+
+* Business logo or image
+* Business name
+* Category
+* Location / service area
+* Campaign title
+* Short description
+* Reward amount
+* Share requirements
+* Remaining campaign budget indicator
+* Estimated verification time
+* “Share & Earn” button
+* “View details” button
+* “Why recommended” explanation
+
+## Activity section
+
+* Recent shares
+* Pending reviews
+* Approved rewards
+* Rejected rewards with reason
+* Clicks and conversions generated
+* Payout history
+
+---
+
+# Business dashboard
+
+Create a business dashboard with:
+
+## Header
+
+* Business name
+* Subscription status
+* Current weekly budget
+* Campaign status
+* Notifications
+* Account menu
+
+## Key analytics cards
+
+* Active campaigns
+* Total verified shares
+* Total unique clicks
+* Total conversions
+* Total spend
+* Cost per verified share
+* Cost per click
+* Cost per conversion
+* Remaining budget
+* Geographic performance
+
+## Campaign management
+
+* Create campaign
+* Edit campaign
+* Pause campaign
+* Resume campaign
+* End campaign
+* Duplicate campaign
+* Set weekly budget
+* Set geographic area
+* Set reward amount
+* Set campaign start and end dates
+* Upload brand assets
+* Add landing page URL
+* Choose CTA
+* View campaign performance
+
+## Analytics views
+
+* Real-time event feed
+* Shares over time
+* Clicks over time
+* Conversions over time
+* Performance by city / ZIP / region
+* Performance by share channel
+* Top-performing campaign links
+* Fraud / invalid activity notices
+* CSV export
+
+---
+
+# Payments and payouts
+
+Use Stripe for:
+
+* Business subscription billing
+* Business campaign budget payments
+* User payouts where supported
+* Identity verification / onboarding if required
+* Payment method storage without storing raw card or bank data
+
+Support payout preference records for:
+
+* Stripe-connected payout account
+* Bank account
+* Debit card
+* PayPal
+* Cash App
+* Venmo
+
+Important:
+For the first release, build the payout system with Stripe Connect as the primary supported payout rail. Display PayPal, Cash App, and Venmo as “coming soon” unless a compliant verified API integration is configured.
+
+Payout rules:
+
+* Users may request payout at $100 available balance
+* Users may continue accumulating earnings beyond $100
+* Admin can configure payout threshold, review period, payout schedule, and maximum payout amount
+* Hold rewards until verification is complete
+* Create payout ledger records
+* Require tax and identity workflow before payouts where legally required
+* Include fraud review and account hold capability
+
+---
+
+# Anti-fraud, privacy, and compliance requirements
+
+Build these controls from the beginning:
+
+## Fraud prevention
+
+* Unique tracked links per user and campaign
+* Rate limits on share attempts
+* Duplicate click detection
+* Bot and VPN risk checks
+* Device and session risk signals
+* Click quality scoring
+* Self-click and repeated-click detection
+* IP and device anomaly detection
+* Manual review queue
+* Admin ability to freeze earnings
+* Admin ability to reject or reverse rewards
+* Campaign budget protection
+* Daily and weekly user earning caps configurable by admin
+
+## Privacy
+
+* Ask for location permission clearly and allow manual location entry
+* Do not access a user’s contacts, friends, private messages, or social accounts without explicit consent and a supported integration
+* Do not claim to know whether a share reached “real people” unless verified by permitted, reliable signals
+* Provide privacy policy, terms of service, reward terms, cookie policy, and consent screens
+* Store only necessary personal data
+* Encrypt sensitive data
+* Never store raw bank account or card numbers
+
+## Legal / disclosure UI
+
+Add placeholders and routes for:
+
+* Terms of Service
+* Privacy Policy
+* Reward Program Terms
+* Advertiser Terms
+* FTC endorsement disclosure guidance
+* Earnings disclaimer
+* Tax information notice
+* Prohibited activity policy
+* Dispute and appeal process
+
+Include a user-facing disclosure near each campaign:
+“Only share content you genuinely support. Add any legally required disclosure when sharing sponsored or rewarded content. Rewards are subject to verification and program rules.”
+
+---
+
+# Admin dashboard
+
+Create a secure admin portal with role-based access.
+
+Admin features:
+
+* View and manage users
+* View and manage businesses
+* Approve or reject business accounts
+* Approve, pause, or reject campaigns
+* Review suspicious activity
+* Review pending rewards
+* Adjust reward balances with audit logs
+* Manage payouts
+* Set payout thresholds
+* Set daily and weekly earning limits
+* Configure categories
+* Configure geographic settings
+* Configure reward rules
+* Configure activation tasks for the five platform properties
+* View platform revenue
+* View subscription revenue
+* View campaign spend
+* View outstanding payout liability
+* View fraud metrics
+* Export data
+* Manage support tickets
+* Maintain full admin audit logs
+
+---
+
+# Recommended technology stack
+
+Use:
+
+* Frontend: React + TypeScript + Tailwind CSS
+* Framework: Next.js or Replit-supported full-stack React architecture
+* Backend: Node.js + TypeScript
+* Database: PostgreSQL
+* ORM: Prisma
+* Authentication: Google OAuth with secure session management
+* Payments: Stripe Billing + Stripe Connect
+* Analytics: first-party event tracking stored in PostgreSQL, designed to later integrate with PostHog or Mixpanel
+* File uploads: secure object storage
+* Email: Resend or SendGrid
+* Maps / geolocation: Google Maps API or Mapbox
+* Background jobs: queue system for click processing, fraud checks, reward verification, and payout workflows
+* Deployment: Replit deployment-ready configuration
+* Environment variables: use secure secrets, never hardcode keys
+
+---
+
+# Database models
+
+Create database tables/models for:
+
+* User
+* UserProfile
+* Business
+* BusinessProfile
+* BusinessSubscription
+* Campaign
+* CampaignBudget
+* CampaignAsset
+* CampaignTargeting
+* ShareTask
+* ShareEvent
+* TrackingLink
+* ClickEvent
+* ConversionEvent
+* Reward
+* RewardLedger
+* PayoutRequest
+* Payout
+* PaymentMethod
+* FraudReview
+* FraudSignal
+* Location
+* Category
+* Notification
+* SupportTicket
+* AdminUser
+* AdminAuditLog
+* RequiredNetworkProperty
+* RequiredNetworkTask
+* ConsentRecord
+* LegalDocumentAcceptance
+
+Every financial or reward-changing action must have an immutable ledger/audit record.
+
+---
+
+# Pages and routes
+
+Public:
+
+* /
+* /how-it-works
+* /for-users
+* /for-businesses
+* /pricing
+* /faq
+* /terms
+* /privacy
+* /rewards-terms
+* /advertiser-terms
+* /contact
+* /login
+* /signup
+
+User:
+
+* /app
+* /app/campaigns
+* /app/campaigns/[id]
+* /app/share-history
+* /app/earnings
+* /app/payouts
+* /app/profile
+* /app/settings
+* /app/activate-network
+
+Business:
+
+* /business
+* /business/onboarding
+* /business/campaigns
+* /business/campaigns/new
+* /business/campaigns/[id]
+* /business/analytics
+* /business/billing
+* /business/settings
+
+Admin:
+
+* /admin
+* /admin/users
+* /admin/businesses
+* /admin/campaigns
+* /admin/rewards
+* /admin/payouts
+* /admin/fraud
+* /admin/settings
+* /admin/audit-logs
+
+---
+
+# Design direction
+
+Brand name: ShareTree
+
+Visual identity:
+
+* Clean, trustworthy, community-focused
+* Modern fintech + local marketplace aesthetic
+* Mobile-first
+* Friendly but professional
+* Strong emphasis on transparent earnings and verified results
+* Use a tree / growth / sharing motif subtly, not cartoonish
+* Accessible color contrast
+* Large readable typography
+* Clear status badges for pending, approved, rejected, paid, active, paused, and ended
+
+Suggested homepage message:
+“Share local brands you believe in. Earn rewards for verified results.”
+
+Suggested business message:
+“Turn local word of mouth into measurable growth.”
+
+---
+
+# MVP delivery order
+
+Build in this order:
+
+## Phase 1: Functional foundation
+
+1. Landing pages
+2. Google sign-in
+3. Automatic user profile creation
+4. Business registration
+5. Stripe subscription checkout for $10/week
+6. User dashboard shell
+7. Business dashboard shell
+8. Campaign creation form
+9. Location and category matching
+10. Unique campaign tracking links
+11. Share event recording
+12. Basic analytics dashboard
+13. Admin portal shell
+
+## Phase 2: Reward operations
+
+1. Pending and approved reward workflow
+2. $100 payout threshold
+3. Stripe Connect payout onboarding
+4. Reward ledger
+5. Payout request workflow
+6. Basic fraud rules
+7. Admin review tools
+
+## Phase 3: Growth and automation
+
+1. Advanced geographic matching
+2. AI-assisted campaign ranking
+3. Conversion tracking
+4. Better fraud scoring
+5. Campaign performance exports
+6. Notifications and email alerts
+7. Referral program
+8. Native mobile app or PWA improvements
+
+---
+
+# Critical build rules
+
+* Do not hardcode payment keys, OAuth secrets, or API keys.
+* Use environment variables and include an `.env.example`.
+* Add seed data for users, businesses, campaigns, categories, and analytics.
+* Build responsive layouts for phone, tablet, and desktop.
+* Use realistic mock data where integrations are not configured.
+* Add empty states, loading states, validation, error messages, and success messages.
+* Make every dashboard action traceable in the database.
+* Clearly distinguish mock/demo mode from live payment mode.
+* Include README setup instructions.
+* Include a checklist of required API keys and integrations.
+* Include test accounts and demo seed instructions.
+* Build the system so the reward amount, subscription price, payout threshold, and activation requirements can all be changed by admins without code changes.
+
+Start by generating the complete working MVP with authentication, database schema, user and business dashboards, campaign creation, local matching, unique tracking links, share event tracking, Stripe subscription checkout, and an admin dashboard. Use mocked payout processing until Stripe Connect is configured.

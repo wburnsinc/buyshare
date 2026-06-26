@@ -1,0 +1,174 @@
+# 23. Stripe Payment Processing Fee
+
+Integrate [Stripe](https://stripe.com?utm_source=chatgpt.com) through a secure server-side payment-provider abstraction.
+
+PocketCash must charge a **separate $1.00 platform payment-processing fee for each eligible completed transaction**. This fee is paid to PocketCash through the platform’s Stripe account and must be clearly disclosed to the user before checkout.
+
+## Fee Rules
+
+* Charge **$1.00 USD per eligible transaction**.
+* Make the fee configurable by MASTER ADMIN.
+* Default fee label: **PocketCash Processing Fee**.
+* Show the fee separately from:
+
+  * loan principal,
+  * interest,
+  * lender contribution amount,
+  * community-support contribution amount,
+  * the existing 2.5% platform participation fee.
+* Display the complete checkout breakdown before payment:
+
+  * contribution or payment amount,
+  * 2.5% platform fee when applicable,
+  * $1.00 PocketCash Processing Fee when applicable,
+  * applicable taxes if configured,
+  * total charged today.
+* Do not silently add fees.
+* Do not charge the $1 fee more than once for the same idempotent transaction.
+* Do not charge the fee for failed, canceled, voided, or duplicate transactions.
+* For refunds, reversals, disputes, or returned payments, create a configurable fee-refund policy and clearly disclose whether the $1 fee is refundable.
+* In Demo Mode, simulate all Stripe payment events and fees without using live Stripe credentials.
+
+## Eligible Transaction Types
+
+Create MASTER ADMIN settings to choose which transaction types receive the $1 processing fee:
+
+* Lender funding contribution
+* Community-support contribution
+* Borrower repayment
+* Borrower membership or participation payment
+* Lender membership or participation payment
+* Optional campaign boost payment
+* Optional withdrawal or payout request
+* Other configurable transaction type
+
+Default configuration:
+
+* Apply the $1 processing fee to each successful lender funding contribution.
+* Apply the $1 processing fee to each successful community-support contribution.
+* Do not apply it to internal ledger entries, failed payments, duplicate requests, or simulated demo transactions.
+
+## Stripe Integration Requirements
+
+Use Stripe only through secure backend/server-side code.
+
+* Store Stripe credentials only in Replit Secrets or environment variables.
+* Never expose the Stripe secret key in frontend code.
+* Never store raw card numbers, CVC values, bank passwords, or sensitive payment credentials in the PocketCash database.
+* Use Stripe-hosted or Stripe-secured payment collection components.
+* Use Payment Intents or the appropriate current Stripe payment workflow.
+* Use idempotency keys for every payment request.
+* Verify Stripe webhook signatures server-side.
+* Store Stripe customer IDs, payment intent IDs, charge IDs, refund IDs, and event IDs only as provider references.
+* Create webhook handling for:
+
+  * payment succeeded,
+  * payment failed,
+  * payment canceled,
+  * refund created,
+  * charge disputed,
+  * dispute updated,
+  * payout status,
+  * payment method updates.
+* Do not mark a payment as complete based only on browser/client confirmation.
+* Mark payments as settled only after verified Stripe webhook processing and internal reconciliation.
+* Add retry-safe webhook processing and prevent duplicate ledger entries.
+
+## Stripe Environment Variables
+
+Document these environment variables in the README, but do not hardcode any real values:
+
+* `STRIPE_SECRET_KEY`
+* `STRIPE_PUBLISHABLE_KEY`
+* `STRIPE_WEBHOOK_SECRET`
+* `STRIPE_ACCOUNT_ID` if using Stripe Connect
+* `STRIPE_MODE` with values such as `test` or `live`
+
+Use test mode by default.
+
+Require MASTER ADMIN to explicitly approve switching from test mode to live mode.
+
+## Checkout Experience
+
+At checkout, show a clear order summary:
+
+* Selected campaign
+* Contribution or payment amount
+* Campaign type: loan funding or community support
+* 2.5% PocketCash platform fee, if applicable
+* $1.00 PocketCash Processing Fee, if applicable
+* Total amount charged
+* Refund policy link
+* Risk disclosure link
+* Terms acceptance checkbox where required
+
+Require users to confirm the full amount before payment.
+
+## Ledger and Reporting
+
+For every successful eligible Stripe transaction:
+
+* Create an immutable transaction record.
+* Create double-entry ledger records.
+* Record:
+
+  * gross transaction amount,
+  * 2.5% platform fee,
+  * $1 processing fee,
+  * Stripe processor fees if available,
+  * net amount allocated to the campaign or loan,
+  * transaction status,
+  * Stripe provider references,
+  * reconciliation status.
+* Do not overwrite financial records.
+* Use reversals or adjustments for corrections.
+* Provide MASTER ADMIN reports for:
+
+  * total $1 processing fees collected,
+  * total 2.5% platform fees collected,
+  * Stripe processing fees,
+  * gross volume,
+  * net volume,
+  * refunds,
+  * disputes,
+  * failed payments,
+  * unreconciled transactions,
+  * fee revenue by day, week, month, campaign, and transaction type.
+
+## MASTER ADMIN Stripe Controls
+
+Add a Stripe settings area in MASTER ADMIN Portal.
+
+MASTER ADMIN can:
+
+* Enable or disable Stripe integration.
+* Switch between test mode and live mode only after confirmation.
+* Configure eligible transaction types for the $1 fee.
+* Change the $1 fee amount.
+* Enable or disable the 2.5% fee by transaction type.
+* Configure refund treatment for the $1 fee.
+* View Stripe webhook health.
+* View payment failures.
+* View disputes.
+* View reconciliation status.
+* Export Stripe-related financial reports.
+* Disable checkout immediately with an emergency payment kill switch.
+
+All Stripe configuration changes must require:
+
+* MFA,
+* re-authentication,
+* reason for change,
+* before/after audit log,
+* timestamp,
+* administrator identity.
+
+## Security Requirement
+
+If Stripe credentials are missing, invalid, or configured only for test mode, PocketCash must:
+
+* remain in Demo Mode or Stripe Test Mode,
+* show no live payment option,
+* prevent real transactions,
+* log the configuration issue for MASTER ADMIN,
+* never fall back to an insecure payment method.
